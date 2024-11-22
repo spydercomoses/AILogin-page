@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intelligent Login Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #6e7ccf, #99b3f2);
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .moving-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, #ff6ec7, #ff9a8b, #7b2ff7, #ffbd59);
+      background-size: 400% 400%;
+      animation: gradientMotion 6s ease infinite;
+      z-index: -1;
+    }
+
+    @keyframes gradientMotion {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .login-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      width: 350px;
+      text-align: center;
+      transform: translateY(-50px);
+      animation: slideIn 1s ease-out forwards;
+    }
+    
+    h2 {
+      margin-bottom: 20px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .input-field:focus {
+      border-color: #6e7ccf;
+      outline: none;
+    }
+
+    .input-field::placeholder {
+      color: #aaa;
+    }
+
+    .btn {
+      background-color: #6e7ccf;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #4e5bbf;
+    }
+
+    .message {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .message a {
+      color: #6e7ccf;
+      text-decoration: none;
+    }
+
+    .message a:hover {
+      text-decoration: underline;
+    }
+
+    /* Animation */
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Chat and story button */
+    .story-btn {
+      margin-top: 20px;
+      background-color: #ff6ec7;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .story-btn:hover {
+      background-color: #ff9a8b;
+    }
+
+    .chatbox {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      height: 200px;
+      overflow-y: auto;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <div class="moving-background"></div>
+  
+  <div class="login-container">
+    <h2>Welcome Back</h2>
+    <form id="loginForm">
+      <input type="email" id="email" class="input-field" placeholder="Enter your email" required>
+      <input type="password" id="password" class="input-field" placeholder="Enter your password" required>
+      <button type="submit" class="btn">Login</button>
+    </form>
+    <div class="message" id="message"></div>
+    
+    <button class="story-btn" id="storyBtn">Tell me a story!</button>
+
+    <div class="chatbox" id="chatbox">
+      <div id="chatContent">Chat with AI!</div>
+      <input type="text" id="userInput" class="input-field" placeholder="Type your message..." />
+      <button class="btn" id="sendMessage">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const messageDiv = document.getElementById('message');
+    const storyBtn = document.getElementById('storyBtn');
+    const chatbox = document.getElementById('chatbox');
+    const chatContent = document.getElementById('chatContent');
+    const sendMessageBtn = document.getElementById('sendMessage');
+    const userInput = document.getElementById('userInput');
+    
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (email === '' || password === '') {
+        messageDiv.innerHTML = 'Please fill in both fields.';
+        messageDiv.style.color = '#e74c3c';
+      } else {
+        messageDiv.innerHTML = 'Logging in...';
+        messageDiv.style.color = '#2ecc71';
+        
+        setTimeout(() => {
+          messageDiv.innerHTML = 'Successfully logged in!';
+          messageDiv.style.color = '#2ecc71';
+          window.location.href = 'dashboard.html';
+        }, 2000);
+      }
+    });
+
+    storyBtn.addEventListener("click", () => {
+      chatContent.innerHTML += "<br><b>AI:</b> Once upon a time, in a land filled with code and dreams, a programmer like you could solve any problem with just a little creativity. The journey of your story begins with every line of code you write!";
+    });
+
+    sendMessageBtn.addEventListener("click", () => {
+      const userMessage = userInput.value.trim();
+      if (userMessage !== "") {
+        chatContent.innerHTML += `<br><b>You:</b> ${userMessage}`;
+        userInput.value = "";
+        setTimeout(() => {
+          chatContent.innerHTML += "<br><b>AI:</b> That sounds fascinating! What happens next in your story?";
+        }, 1000);
+      }
+    });
+  </script>
+</body>
+</html>
+
